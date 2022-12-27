@@ -2,7 +2,7 @@
   "$schema": "https://json.schemastore.org/package",
   "name": "bulk-gmail",
   "description": "Send bulk emails using Gmail",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "type": "module",
   "main": "dist/app.js",
   "module": "dist/app.js",
@@ -24,6 +24,15 @@
   "bugs": {
     "url": "https://github.com/arcanistzed/bulk-gmail/issues"
   },
+  "keywords": [
+    "gmail",
+    "bulk",
+    "email",
+    "cli",
+    "send",
+    "smtp",
+    "nodemailer"
+  ],
   "scripts": {
     "build": "tsc",
     "build:watch": "tsc -w",
