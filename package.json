@@ -1,0 +1,44 @@
+{
+  "name": "bulk-gmail",
+  "description": "Send bulk emails using Gmail",
+  "version": "1.0.1",
+  "type": "module",
+  "main": "dist/app.js",
+  "author": {
+    "name": "Daniel Thorp",
+    "email": "arcanistzed@gmail.com",
+    "url": "https://arcanist.me"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/arcanistzed/bulk-gmail"
+  },
+  "scripts": {
+    "build": "tsc",
+    "build:watch": "tsc -w",
+    "send": "node dist/app.js",
+    "start": "npm run build; npm run send",
+    "dev": "npm run build; npm run send -- --dev"
+  },
+  "bin": "dist/app.js",
+  "dependencies": {
+    "@types/fs-extra": "^9.0.13",
+    "commander": "^9.4.1",
+    "csvtojson": "^2.0.10",
+    "dotenv": "^16.0.3",
+    "fs-extra": "^11.1.0",
+    "handlebars": "^4.7.7",
+    "inquirer": "^9.1.4",
+    "nodemailer": "^6.8.0",
+    "nodemailer-smtp-transport": "^2.7.4",
+    "smtp-server": "^3.11.0",
+    "zod": "^3.20.2"
+  },
+  "devDependencies": {
+    "@types/inquirer": "^9.0.3",
+    "@types/nodemailer": "^6.4.7",
+    "@types/nodemailer-smtp-transport": "^2.7.5",
+    "@types/smtp-server": "^3.5.7",
+    "typescript": "^4.9.4"
+  }
+}
