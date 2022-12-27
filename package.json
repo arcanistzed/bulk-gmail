@@ -1,9 +1,11 @@
 {
+  "$schema": "https://json.schemastore.org/package",
   "name": "bulk-gmail",
   "description": "Send bulk emails using Gmail",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "type": "module",
   "main": "dist/app.js",
+  "module": "dist/app.js",
   "author": {
     "name": "Daniel Thorp",
     "email": "arcanistzed@gmail.com",
@@ -12,6 +14,15 @@
   "repository": {
     "type": "git",
     "url": "https://github.com/arcanistzed/bulk-gmail"
+  },
+  "homepage": "https://arcanist.me",
+  "funding": {
+    "type": "patreon",
+    "url": "https://www.patreon.com/arcanistzed"
+  },
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/arcanistzed/bulk-gmail/issues"
   },
   "scripts": {
     "build": "tsc",
