@@ -22,7 +22,7 @@ The `language.json` file can also have `from`, `subject`, and `meta` keys. `meta
 
 Here is an example of a `language.json` file:
 
-```json
+```jsonc
 {
     "en": {
         "from": "Your name",
