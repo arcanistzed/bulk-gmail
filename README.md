@@ -1,6 +1,6 @@
 # Bulk Gmail
 
-![Version](https://img.shields.io/github/v/tag/arcanistzed/bulk-gmail?label=Version&style=flat-square&color=2577a1) [![Discord Server](https://img.shields.io/badge/-Discord-%232c2f33?style=flat-square&logo=discord)](https://discord.gg/AAkZWWqVav) [![Patreon](https://img.shields.io/badge/-Patreon-%23141518?style=flat-square&logo=patreon)](https://www.patreon.com/bePatron?u=15896855)
+[![Version](https://img.shields.io/npm/v/bulk-gmail?style=flat-square)](https://npmjs.com/package/bulk-gmail) [![Discord Server](https://img.shields.io/badge/-Discord-%232c2f33?style=flat-square&logo=discord)](https://discord.gg/AAkZWWqVav) [![Patreon](https://img.shields.io/badge/-Patreon-%23141518?style=flat-square&logo=patreon)](https://www.patreon.com/bePatron?u=15896855)
 
 This is a CLI tool for sending bulk emails using Gmail.
 
