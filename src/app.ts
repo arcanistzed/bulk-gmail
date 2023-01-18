@@ -147,7 +147,7 @@ csvParser.subscribe(row => {
 	emails.push({
 		to: email,
 		subject: languageData[language].subject,
-		text: templates.text(data),
+		text: templates.text(data).replace(/<\/?[^>]+(>|$)/g, ""),
 		html: templates.html(data),
 		list: {
 			...(languageData[language].meta ?? {}),
