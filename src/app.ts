@@ -162,50 +162,64 @@ csvParser.subscribe(row => {
 // Wait for the stream to finish
 await csvParser;
 
-// Create a SMTP transport object
-const transport = nodemailer.createTransport(
-	smtpTransport({
-		service: "gmail",
-		auth: {
-			user: email,
-			pass: password,
-		},
-		logger: dev,
-		debug: dev,
-		pool: {
-			pool: true,
-		},
-	}),
-	{
-		from: `${languageData.en.from} <${email}>`,
+// Send the messages
+console.info("Sending messages...");
+let transport: nodemailer.Transporter;
+let sent = 0;
+for (const message of messages) {
+	// Stop sending after 450 messages per 24 hours (Gmail limit)
+	if (sent >= 450) {
+		console.info("Reached the Gmail limit of 450 messages per 24 hours. Stopping...");
+		break;
 	}
-);
-
-// Verify the connection configuration
-try {
-	await transport.verify();
-	console.info("Server is ready to take our messages");
-} catch (err) {
-	console.error(err);
+	await send(message);
+	sent++;
 }
 
-// Send the emails
-console.info("Sending emails...");
-for (const email of emails) {
-	await send(email);
-}
-
-async function send(email: Mail.Options) {
+/**
+ * Send a message using Nodemailer through Gmail
+ * @param message The email message to send
+ */
+async function send(message: Mail.Options) {
 	try {
-		const result = await transport.sendMail(email);
+		// Create a SMTP transport object
+		nodemailer.createTransport(
+			smtpTransport({
+				service: "gmail",
+				auth: {
+					user: from,
+					pass: password,
+				},
+				logger: dev,
+				debug: dev,
+				pool: {
+					pool: true,
+				},
+			}),
+			{
+				from: `${languageData.en.from} <${from}>`,
+			}
+		);
+
+		// Verify the connection configuration
+		try {
+			await transport.verify();
+			console.info("Server is ready to take our messages");
+		} catch (error) {
+			console.error("Failed to verify server:", error);
+			process.exit(-1);
+		}
+
+		const result = await transport.sendMail(message);
 		console.info("Message sent:", result.messageId, result.envelope);
 	} catch (error) {
 		console.error("Failed to send message:", error);
-		await new Promise(resolve => setTimeout(resolve, 5000));
+		// Wait 30 seconds before retrying
+		await new Promise(resolve => setTimeout(resolve, 30 * 1000));
 		console.info("Retrying...");
-		await send(email);
+		await send(message);
+	} finally {
+		// Close the connection pool
+		transport.close();
 	}
 }
-
-// Close the connection pool
-transport.close();
