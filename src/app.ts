@@ -192,8 +192,19 @@ try {
 // Send the emails
 console.info("Sending emails...");
 for (const email of emails) {
-	const result = await transport.sendMail(email);
-	console.info("Message sent:", result.messageId, result.envelope);
+	await send(email);
+}
+
+async function send(email: Mail.Options) {
+	try {
+		const result = await transport.sendMail(email);
+		console.info("Message sent:", result.messageId, result.envelope);
+	} catch (error) {
+		console.error("Failed to send message:", error);
+		await new Promise(resolve => setTimeout(resolve, 5000));
+		console.info("Retrying...");
+		await send(email);
+	}
 }
 
 // Close the connection pool
