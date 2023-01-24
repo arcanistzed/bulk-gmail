@@ -14,12 +14,12 @@ dotenv.config();
 const { env } = process;
 
 // Parse the command line arguments
-let { dev, templateDir, template, file, email, password } = program
+let { dev, templateDir, template, file, from, password } = program
 	.option("-v, --dev", "Run in development mode")
 	.option("-d, --template-dir <templateDir>", "The path to the templates directory")
 	.option("-t, --template <template>", "The template to send")
-	.option("-f, --file <file>", "The CSV file to read")
-	.option("-e, --email <email>", "The email address to send from")
+	.option("-c, --file <file>", "The CSV file to read")
+	.option("-f, --from <from>", "The email address to send from")
 	.option("-p, --password <password>", "The password to use")
 	.parse()
 	.opts();
@@ -68,17 +68,17 @@ if (!file || !(await fs.pathExists(file)) || !z.string().endsWith(".csv").safePa
 	throw new Error("Please specify a CSV file to read");
 }
 
-// Ask for the email address
-email ??= (
-	await inquirer.prompt<{ email: string }>({
-		name: "email",
+// Ask for the email address to send from
+from ??= (
+	await inquirer.prompt<{ from: string }>({
+		name: "from",
 		type: "input",
 		message: "Enter the email address to send from",
 		default: env.GMAIL_USER,
 	})
-)?.email;
-// Validate the email address
-if (!email || !z.string().email().safeParse(email).success) {
+)?.from;
+// Validate the email address to send from
+if (!from || !z.string().email().safeParse(from).success) {
 	throw new Error("Please specify an email address to send from");
 }
 
@@ -123,7 +123,7 @@ const csvParser = csv({
 fs.createReadStream(file).pipe(csvParser);
 
 // Transform the stream
-const emails: Mail.Options[] = [];
+const messages: Mail.Options[] = [];
 csvParser.subscribe(row => {
 	// Parse the row
 	const schema = z
@@ -143,8 +143,8 @@ csvParser.subscribe(row => {
 
 	const data = { ...languageData[language], name, email };
 
-	// Add the email to the queue
-	emails.push({
+	// Add the message to the queue
+	messages.push({
 		to: email,
 		subject: languageData[language].subject,
 		text: templates.text(data).replace(/<\/?[^>]+(>|$)/g, ""),
