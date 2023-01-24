@@ -135,8 +135,8 @@ csvParser.subscribe(row => {
 		.safeParse(row);
 
 	if (!schema.success) {
-		console.error(schema.error);
-		return;
+		console.error(`Failed to parse CSV row: ${JSON.stringify(row)}`);
+		process.exit(-1);
 	}
 
 	const { name, email, language } = schema.data;
