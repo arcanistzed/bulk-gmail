@@ -115,7 +115,7 @@ try {
 
 // Create a parser
 const csvParser = csv({
-	headers: ["name", "email", "language"],
+	headers: ["id","name", "email", "language"],
 	trim: true,
 });
 
@@ -128,6 +128,7 @@ csvParser.subscribe(row => {
 	// Parse the row
 	const schema = z
 		.object({
+			id: z.string().min(1),
 			name: z.string().min(1),
 			email: z.string().email(),
 			language: z.union([z.literal("en"), z.literal("fr")]),
@@ -139,9 +140,9 @@ csvParser.subscribe(row => {
 		process.exit(-1);
 	}
 
-	const { name, email, language } = schema.data;
+	const { id, name, email, language } = schema.data;
 
-	const data = { ...languageData[language], name, email };
+	const data = { ...languageData[language], id, name, email };
 
 	// Add the message to the queue
 	messages.push({
