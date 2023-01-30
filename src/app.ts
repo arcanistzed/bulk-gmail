@@ -115,7 +115,7 @@ try {
 
 // Create a parser
 const csvParser = csv({
-	headers: ["id","name", "email", "language"],
+	headers: ["id", "name", "email", "language"],
 	trim: true,
 });
 
@@ -182,9 +182,10 @@ for (const message of messages) {
  * @param message The email message to send
  */
 async function send(message: Mail.Options) {
+	let transport: nodemailer.Transporter | null = null;
 	try {
 		// Create a SMTP transport object
-		nodemailer.createTransport(
+		transport = nodemailer.createTransport(
 			smtpTransport({
 				service: "gmail",
 				auth: {
@@ -221,6 +222,8 @@ async function send(message: Mail.Options) {
 		await send(message);
 	} finally {
 		// Close the connection pool
-		transport.close();
+		if (transport) {
+			transport.close();
+		}
 	}
 }
