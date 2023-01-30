@@ -16,3 +16,7 @@ Retry sending email if failed
 * Changed CLI command to use `-c` instead of `-f` for the CSV file and `-f` is now used for the from email address instead of `-e`
 * Fixed error handling for retying sending emails to make it login again each time and crash if the SMTP transport cannot be verified
 * Added ID column to CSV file
+
+## 1.1.1 - 30 Jan 2023
+
+Fixed errors with transport variable scoping
