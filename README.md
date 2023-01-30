@@ -12,6 +12,7 @@ Bulk Gmail is a CLI that reads from a CSV file for the lists of recipients and a
 
 You can send emails using the `npx bulk-gmail` command. The CLI will prompt you for which email template to use, the for a path to the CSV file containing the list of recipients, and your Gmail credentials. The CSV file should have the following columns:
 
+- `id`: The ID of the recipient
 - `name`: The name of the recipient
 - `email`: The email address of the recipient
 - `language`: The language of the recipient (`en` or `fr`)
