@@ -216,8 +216,8 @@ async function send(message: Mail.Options) {
 		console.info("Message sent:", result.messageId, result.envelope);
 	} catch (error) {
 		console.error("Failed to send message:", error);
-		// Wait 30 seconds before retrying
-		await new Promise(resolve => setTimeout(resolve, 30 * 1000));
+		// Wait 60 seconds before retrying
+		await new Promise(resolve => setTimeout(resolve, 60 * 1000));
 		console.info("Retrying...");
 		await send(message);
 	} finally {
