@@ -20,3 +20,7 @@ Retry sending email if failed
 ## 1.1.1 - 30 Jan 2023
 
 Fixed errors with transport variable scoping
+
+## 1.1.2 - 18 Feb 2023
+
+Infinite restarts after every 10 seconds to test if the rate limit has been lifted
