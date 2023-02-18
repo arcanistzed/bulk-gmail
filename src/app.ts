@@ -182,48 +182,55 @@ for (const message of messages) {
  * @param message The email message to send
  */
 async function send(message: Mail.Options) {
-	let transport: nodemailer.Transporter | null = null;
-	try {
-		// Create a SMTP transport object
-		transport = nodemailer.createTransport(
-			smtpTransport({
-				service: "gmail",
-				auth: {
-					user: from,
-					pass: password,
-				},
-				logger: dev,
-				debug: dev,
-				pool: {
-					pool: true,
-				},
-			}),
-			{
-				from: `${languageData.en.from} <${from}>`,
-			}
-		);
+	// Try until the message is sent
+	while (true) {
+		let transport: nodemailer.Transporter | undefined;
 
-		// Verify the connection configuration
 		try {
-			await transport.verify();
-			console.info("Server is ready to take our messages");
-		} catch (error) {
-			console.error("Failed to verify server:", error);
-			process.exit(-1);
-		}
+			// Create a SMTP transport object
+			transport = nodemailer.createTransport(
+				smtpTransport({
+					service: "gmail",
+					auth: {
+						user: from,
+						pass: password,
+					},
+					logger: dev,
+					debug: dev,
+					pool: {
+						pool: true,
+					},
+				}),
+				{
+					from: `${languageData.en.from} <${from}>`,
+				}
+			);
 
-		const result = await transport.sendMail(message);
-		console.info("Message sent:", result.messageId, result.envelope);
-	} catch (error) {
-		console.error("Failed to send message:", error);
-		// Wait 60 seconds before retrying
-		await new Promise(resolve => setTimeout(resolve, 60 * 1000));
-		console.info("Retrying...");
-		await send(message);
-	} finally {
-		// Close the connection pool
-		if (transport) {
-			transport.close();
+			// Verify the connection configuration
+			try {
+				await transport.verify();
+				console.info("Server is ready to take our messages");
+			} catch (error) {
+				console.error("Failed to verify server:", error);
+				process.exit(-1);
+			}
+
+			const result = await transport.sendMail(message);
+			console.info("Message sent:", result.messageId, result.envelope);
+			break;
+		} catch (error) {
+			console.error("Failed to send message:", error);
+			// Wait 10 seconds before retrying
+			await new Promise(resolve => setTimeout(resolve, 10 * 1000));
+
+			// Close the connection pool
+			if (transport) {
+				transport.close();
+			}
+
+			// Try again
+			console.info("Retrying...");
+			continue;
 		}
 	}
 }
